@@ -28,3 +28,5 @@ if __name__ == '__main__':
     trajectory_generator_gui.show()
     sys.exit(app.exec_())
 
+
+

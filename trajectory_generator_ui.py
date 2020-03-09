@@ -14,6 +14,7 @@ from PyQt5.QtGui import QIcon
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
 import random
 
 class Ui_MainWindow(object):
@@ -114,6 +115,11 @@ class Ui_MainWindow(object):
         self.radioButton_6.setText(_translate("MainWindow", "躍度最小"))
         self.pushButton_2.setText(_translate("MainWindow", "データ出力"))
 
+def resizeByRange(x, in_min, in_max, out_min, out_max):
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+
+def resizeByScale(x, a, b):
+    return  a * (x - b)
 
 class PlotCanvas(FigureCanvas):
 
@@ -138,10 +144,24 @@ class PlotCanvas(FigureCanvas):
         ax = self.figure.add_subplot(111)
         ax.plot(data1, 'ro')
         ax.plot(data2, 'b-')
+        img = mpimg.imread('map.png')
+        ax.imshow(img)
+        ax.set_xticks([])
+        ax.set_yticks([])
         self.draw()
 
     def onclick(self, event):
-        print ('button=%d (%d, %d) (%f, %f)' \
-        %(event.button, event.x, event.y, event.xdata, event.ydata))
-        # select_index = np.searchsorted(x, event.xdata)
-        # update(event)
+        print ('(%f, %f) [px]' %(event.xdata, event.ydata))
+        origin = [82, 577]      # [px]
+        scale = 0.00512295081   # 縮尺[m/px]
+        point = [0, 0]
+        point[0] = resizeByScale(event.xdata, scale, origin[0])
+        point[1] = resizeByScale(-event.ydata, scale, -origin[1])
+
+        data1 = [random.random() for i in range(100)]
+        ax = self.figure.axes[0]
+        ax.plot(event.xdata, event.ydata, marker='.')
+        self.draw()
+        print(self.figure.axes)
+
+
