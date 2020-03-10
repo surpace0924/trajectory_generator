@@ -8,10 +8,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton,QComboBox,QListView,QLabel
-from PyQt5.QtGui import QIcon
-import PlotCanvas
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -23,8 +20,9 @@ class Ui_MainWindow(object):
         self.textBrowser = QtWidgets.QTextBrowser(self.centralwidget)
         self.textBrowser.setGeometry(QtCore.QRect(0, 370, 581, 131))
         self.textBrowser.setObjectName("textBrowser")
-        self.m = PlotCanvas.PlotCanvas(self, width=5.81, height=3.61)
-        self.m.move(0,0)
+        self.widget = QtWidgets.QWidget(self.centralwidget)
+        self.widget.setGeometry(QtCore.QRect(0, 0, 581, 361))
+        self.widget.setObjectName("widget")
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton.setGeometry(QtCore.QRect(590, 480, 94, 32))
         self.pushButton.setObjectName("pushButton")

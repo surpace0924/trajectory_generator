@@ -62,12 +62,12 @@
     <property name="title">
      <string>制御点</string>
     </property>
-    <widget class="QTableView" name="tableView">
+    <widget class="QTableWidget" name="tableWidget">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>10</x>
        <y>20</y>
-       <width>321</width>
+       <width>331</width>
        <height>331</height>
       </rect>
      </property>
@@ -279,8 +279,43 @@
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>button_generate_Click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>656</x>
+     <y>515</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>584</x>
+     <y>511</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>button_export_Click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>783</x>
+     <y>513</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>833</x>
+     <y>513</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
  <slots>
   <slot>setTextHelloWorld()</slot>
+  <slot>button_generate_Click()</slot>
+  <slot>button_export_Click()</slot>
  </slots>
 </ui>
