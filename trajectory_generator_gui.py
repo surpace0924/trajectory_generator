@@ -13,19 +13,7 @@ class TrajectoryGeneratorGui(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot()
     def button_generate_Click(self):
-        self.tableWidget.clear()
-        items = [['hoge', 'HOGE'], ['fuga', 'FUGA'], ['piyo', 'PIYO']]
-
-        self.tableWidget.setRowCount(len(items))
-        self.tableWidget.setColumnCount(4);
-
-        r = 0
-        for item in items:
-            self.tableWidget.setItem(r, 0, QTableWidgetItem(item[0]))
-            self.tableWidget.setItem(r, 1, QTableWidgetItem(item[1]))
-            r += 1
-
-        print(self)
+        print("aaa")
 
     def button_export_Click(self):
         print(self)

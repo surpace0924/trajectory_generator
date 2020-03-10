@@ -9,9 +9,11 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton,QComboBox,QListView,QLabel
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton,QComboBox,QListView,QLabel,QTableWidgetItem
 from PyQt5.QtGui import QIcon
+
 import PlotCanvas
+import PointManager
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -23,6 +25,7 @@ class Ui_MainWindow(object):
         self.textBrowser = QtWidgets.QTextBrowser(self.centralwidget)
         self.textBrowser.setGeometry(QtCore.QRect(0, 370, 581, 131))
         self.textBrowser.setObjectName("textBrowser")
+        self.pm = PointManager.PointManager()
         self.m = PlotCanvas.PlotCanvas(self, width=5.81, height=3.61)
         self.m.move(0,0)
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
@@ -34,8 +37,9 @@ class Ui_MainWindow(object):
         self.tableWidget = QtWidgets.QTableWidget(self.groupBox)
         self.tableWidget.setGeometry(QtCore.QRect(10, 20, 331, 331))
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(0)
+        self.tableWidget.setColumnCount(4)
         self.tableWidget.setRowCount(0)
+        self.tableWidget.horizontalHeader().setDefaultSectionSize(72)
         self.groupBox_2 = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_2.setGeometry(QtCore.QRect(590, 360, 231, 121))
         self.groupBox_2.setObjectName("groupBox_2")
@@ -114,3 +118,7 @@ class Ui_MainWindow(object):
         self.radioButton_5.setText(_translate("MainWindow", "台形加速"))
         self.radioButton_6.setText(_translate("MainWindow", "躍度最小"))
         self.pushButton_2.setText(_translate("MainWindow", "データ出力"))
+        self.tableWidget.setHorizontalHeaderItem(0, QTableWidgetItem("time[s]"))
+        self.tableWidget.setHorizontalHeaderItem(1, QTableWidgetItem("x[m]"))
+        self.tableWidget.setHorizontalHeaderItem(2, QTableWidgetItem("y[m]"))
+        self.tableWidget.setHorizontalHeaderItem(3, QTableWidgetItem("angle[rad]"))

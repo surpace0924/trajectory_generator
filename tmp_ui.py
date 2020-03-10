@@ -34,6 +34,7 @@ class Ui_MainWindow(object):
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(0)
         self.tableWidget.setRowCount(0)
+        self.tableWidget.horizontalHeader().setDefaultSectionSize(70)
         self.groupBox_2 = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_2.setGeometry(QtCore.QRect(590, 360, 231, 121))
         self.groupBox_2.setObjectName("groupBox_2")

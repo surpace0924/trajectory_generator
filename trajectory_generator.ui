@@ -71,6 +71,9 @@
        <height>331</height>
       </rect>
      </property>
+     <attribute name="horizontalHeaderDefaultSectionSize">
+      <number>70</number>
+     </attribute>
     </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_2">

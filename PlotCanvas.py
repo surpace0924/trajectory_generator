@@ -2,21 +2,20 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton,QComboBox,QListView,QLabel
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton,QComboBox,QListView,QLabel,QTableWidgetItem
 from PyQt5.QtGui import QIcon
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
-import PlotCanvas
 
+import PointManager
 
 def resizeByRange(x, in_min, in_max, out_min, out_max):
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
 def resizeByScale(x, a, b):
     return  a * (x - b)
-
 
 class PlotCanvas(FigureCanvas):
 
@@ -33,10 +32,10 @@ class PlotCanvas(FigureCanvas):
         FigureCanvas.updateGeometry(self)
         self.plot()
 
+        self.parent = parent
+
         # キャンバスクリック時のイベント関数を登録
         cid = fig.canvas.mpl_connect('button_press_event', self.onclick)
-
-        print(self)
 
 
     def plot(self):
@@ -52,17 +51,30 @@ class PlotCanvas(FigureCanvas):
         # 描画
         self.draw()
 
-        print(self)
-
     def onclick(self, event):
         # print ('(%f, %f) [px]' %(event.xdata, event.ydata))
+
+        # 選択点の描画
+        ax = self.figure.axes[0]
+        ax.plot(event.xdata, event.ydata, marker='.')
+        self.draw()
+
         origin = [82, 577]      # [px]
         scale = 0.00512295081   # 縮尺[m/px]
         point = [0, 0]
         point[0] = resizeByScale(event.xdata, scale, origin[0])
         point[1] = resizeByScale(-event.ydata, scale, -origin[1])
+        self.parent.pm.control_points.append(point)
 
-        ax = self.figure.axes[0]
-        ax.plot(event.xdata, event.ydata, marker='.')
-        self.draw()
+
+        self.parent.tableWidget.clearContents()
+        items = self.parent.pm.control_points
+        print(items)
+        self.parent.tableWidget.setRowCount(len(items))
+
+        r = 0
+        for item in items:
+            self.parent.tableWidget.setItem(r, 1, QTableWidgetItem('{0:.3f}'.format(item[0])))
+            self.parent.tableWidget.setItem(r, 2, QTableWidgetItem('{0:.3f}'.format(item[1])))
+            r += 1
 
