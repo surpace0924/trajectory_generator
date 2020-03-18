@@ -13,7 +13,7 @@ class TrajectoryGeneratorGui(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot()
     def button_generate_Click(self):
-        print("aaa")
+        self.canvas.drawTrajectory()
 
     def button_export_Click(self):
         print(self)
