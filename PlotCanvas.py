@@ -91,12 +91,12 @@ class PlotCanvas(FigureCanvas):
         dots = []
         cr.setControlPoint(points)
         cr.calculate()
-        dots = cr.getResult()
+        dots, length = cr.getResult()
 
         dots = np.array(dots)
         dot_px = []
-        for i in range(len(dots)):
-            dot_px.append(convertToPx(dots[i], self.scale, self.origin))
-            self.ax.plot(dot_px[i][0], dot_px[i][1], marker='.', color="red")
+        # for i in range(len(dots)):
+        #     dot_px.append(convertToPx(dots[i], self.scale, self.origin))
+        #     self.ax.plot(dot_px[i][0], dot_px[i][1], marker='.', color="red")
 
         self.draw()

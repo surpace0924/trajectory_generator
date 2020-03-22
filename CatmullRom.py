@@ -5,26 +5,41 @@ class CatmullRom():
     def __init__(self):
         self.control_point = []
         self.result_point = []
+        self.length = 0
 
     def setControlPoint(self, points):
         self.control_point = points
 
     def getResult(self):
-        return self.result_point
+        return self.result_point, self.length
 
     # 計算
     def calculate(self):
-        point = self.control_point
-        for i in range(len(self.control_point) - 1):
-            for t in np.arange(0, 1, 0.1):
-                if i == 0:
-                    self.result_point.append(self.__calculateFirst(t, point[i], point[i+1], point[i+2]))
-                elif i == len(self.control_point) - 2:
-                    self.result_point.append (self.__calculateLast(t, point[i-1], point[i], point[i+1]))
-                else:
-                    self.result_point.append(self.__calculateMiddle(t, point[i-1], point[i], point[i+1], point[i+2]))
+        self.result_point, self.length = self.__calculateTrajectory(self.control_point, 10000)
 
-        print(len(self.result_point))
+    # CatmullRomの計算
+    def __calculateTrajectory(self, point, div):
+        trajectory = [] # 経路点の座標
+        length = 0      # 経路長[m]
+        point_num = 0   # 経路数
+
+        # 区間のループ
+        for i in range(len(point) - 1):
+            # 媒介変数のループ
+            for t in np.arange(0, 1, 1/div):
+                # 始点，終点，中間点で式が違うため，関数の振り分け
+                if i == 0:
+                    trajectory.append(self.__calculateFirst(t, point[i], point[i+1], point[i+2]))
+                elif i == len(point) - 2:
+                    trajectory.append(self.__calculateLast(t, point[i-1], point[i], point[i+1]))
+                else:
+                    trajectory.append(self.__calculateMiddle(t, point[i-1], point[i], point[i+1], point[i+2]))
+
+                # 経路長は経路点間のユークリッド距離の積算で計算
+                length += np.linalg.norm(trajectory[point_num] - trajectory[point_num - 1])
+                point_num += 1
+
+        return trajectory, length
 
     # 各セクションの計算
     def __calculateFirst(self, t, p0, p1, p2):
