@@ -76,7 +76,6 @@ class PlotCanvas(FigureCanvas):
 
         self.parent.tableWidget.clearContents()
         items = self.parent.pm.control_points
-        print(items)
         self.parent.tableWidget.setRowCount(len(items))
 
         r = 0
@@ -90,16 +89,14 @@ class PlotCanvas(FigureCanvas):
         points = np.array(self.parent.pm.control_points)
         cr = CatmullRom.CatmullRom()
         dots = []
-        for i in range(10):
-            dots.append(cr.calculate(i/10, points[0], points[1], points[2], points[3]))
+        cr.setControlPoint(points)
+        cr.calculate()
+        dots = cr.getResult()
 
         dots = np.array(dots)
         dot_px = []
-        for i in range(10):
+        for i in range(len(dots)):
             dot_px.append(convertToPx(dots[i], self.scale, self.origin))
             self.ax.plot(dot_px[i][0], dot_px[i][1], marker='.', color="red")
 
         self.draw()
-
-        print(dot_px)
-

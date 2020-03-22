@@ -18,6 +18,14 @@ class TrajectoryGeneratorGui(QMainWindow, Ui_MainWindow):
     def button_export_Click(self):
         print(self)
 
+    def button_cell_up_Click(self):
+        print("up")
+
+    def button_cell_down_Click(self):
+        print("down")
+
+    def cell_changed(self):
+        print("change")
 
 if __name__ == '__main__':
     argvs = sys.argv
