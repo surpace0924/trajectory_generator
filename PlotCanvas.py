@@ -48,6 +48,7 @@ class PlotCanvas(FigureCanvas):
         self.parent = parent
         self.origin = [82, 577]      # [px]
         self.scale = 0.00512295081   # 縮尺[m/px]
+        self.traj = None
 
         # キャンバスクリック時のイベント関数を登録
         cid = fig.canvas.mpl_connect('button_press_event', self.onclick)
@@ -95,8 +96,21 @@ class PlotCanvas(FigureCanvas):
 
         dots = np.array(dots)
         dot_px = []
+
+        if self.traj != None:
+            self.traj[0].remove()
+            print(len(self.traj))
+
         for i in range(len(dots)):
             dot_px.append(convertToPx(dots[i], self.scale, self.origin))
-            self.ax.plot(dot_px[i][0], dot_px[i][1], marker='.', color="red")
+
+        tmp_x = []
+        tmp_y = []
+        for i in range(len(dot_px)):
+            tmp_x.append(dot_px[i][0])
+            tmp_y.append(dot_px[i][1])
+
+        self.traj = self.ax.plot(tmp_x, tmp_y, marker='.', color="red")
 
         self.draw()
+
