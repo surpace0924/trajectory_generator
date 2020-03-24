@@ -67,11 +67,13 @@ class CatmullRom():
         d = 2 * p1
         return 0.5 * ((b * t * t) + (c * t) + d)
 
+    # 等間隔
     def __getEquallyDistanceProfile(self, length, max_mps, hz):
         time = length / max_mps # 到達時間
         num = time * hz         # 分割数
         return np.arange(0, length, length/num)
 
+    # プロファイルにしたがって，一番近い座標を選択
     def __pickupTrajectory(self, trajectory, length_list, profile):
         result = []
         for item in profile:
@@ -79,12 +81,10 @@ class CatmullRom():
             result.append(trajectory[idx])
         return result
 
-    """
-    概要: リストからある値に最も近い値を返却する関数
-    @param list: データ配列
-    @param num: 対象値
-    @return 対象値に最も近い値
-    """
+    # リストからある値に最も近い値を返却する関数
+    # @param list: データ配列
+    # @param num: 対象値
+    # @return 対象値に最も近い値
     def __getNearestValue(self, list, num):
         # リスト要素と対象値の差分を計算し最小値のインデックスを取得
         idx = np.abs(np.asarray(list) - num).argmin()

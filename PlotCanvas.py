@@ -48,6 +48,7 @@ class PlotCanvas(FigureCanvas):
         self.parent = parent
         self.origin = [82, 577]      # [px]
         self.scale = 0.00512295081   # 縮尺[m/px]
+        self.control_point = None
         self.traj = None
 
         # キャンバスクリック時のイベント関数を登録
@@ -68,22 +69,40 @@ class PlotCanvas(FigureCanvas):
         # print ('(%f, %f) [px]' %(event.xdata, event.ydata))
 
         # 選択点の描画
-        self.ax.plot(event.xdata, event.ydata, marker='.', color="green")
-        self.draw()
+        # self.ax.plot(event.xdata, event.ydata, marker='.', color="green")
+        # self.draw()
 
+        # pxからmへ単位を変換し，制御点を管理するクラスへ書き込み
         clicked_px =  [event.xdata, event.ydata]
         point = convertToMeter(clicked_px, self.scale, self.origin)
         self.parent.pm.control_points.append(point)
 
-        self.parent.tableWidget.clearContents()
+        # tableをクリアし，座標の数だけ行を用意
         items = self.parent.pm.control_points
+        self.parent.tableWidget.clearContents()
         self.parent.tableWidget.setRowCount(len(items))
 
+        # tableへの書き込み
         r = 0
         for item in items:
-            self.parent.tableWidget.setItem(r, 1, QTableWidgetItem('{0:.3f}'.format(item[0])))
-            self.parent.tableWidget.setItem(r, 2, QTableWidgetItem('{0:.3f}'.format(item[1])))
+            self.parent.tableWidget.setItem(r, 0, QTableWidgetItem('{0:.3f}'.format(item[0])))
+            self.parent.tableWidget.setItem(r, 1, QTableWidgetItem('{0:.3f}'.format(item[1])))
             r += 1
+
+        # self.drawControlPoint(self.parent.pm.control_points)
+
+    def drawControlPoint(self, point):
+        # すでに点が描かれている場合はそれを消す
+        if self.control_point != None:
+            self.control_point[0].remove()
+            print(self.control_point)
+
+        dot_px = []
+        for i in range(len(point)):
+            dot_px.append(convertToPx(point[i], self.scale, self.origin))
+        plot_x , plot_y = self.__convertToPlot(dot_px)
+        self.control_point = self.ax.plot(plot_x, plot_y, marker='.', color="green", linestyle='None')
+        self.draw()
 
     def drawTrajectory(self):
         ax = self.figure.axes[0]
@@ -97,20 +116,26 @@ class PlotCanvas(FigureCanvas):
         dots = np.array(dots)
         dot_px = []
 
+        # すでに経路が描かれている場合はそれを消す
         if self.traj != None:
             self.traj[0].remove()
-            print(len(self.traj))
 
         for i in range(len(dots)):
             dot_px.append(convertToPx(dots[i], self.scale, self.origin))
 
-        tmp_x = []
-        tmp_y = []
-        for i in range(len(dot_px)):
-            tmp_x.append(dot_px[i][0])
-            tmp_y.append(dot_px[i][1])
+        # 描画用に座標リストを2つのベクトルに変換
+        plot_x , plot_y = self.__convertToPlot(dot_px)
 
-        self.traj = self.ax.plot(tmp_x, tmp_y, marker='.', color="red")
-
+        # 描画
+        self.traj = self.ax.plot(plot_x, plot_y, marker='.', color="red")
         self.draw()
 
+    # Matplotlibに入れるために座標リストを2つのベクトルに変換する
+    # [[x1, y1], [x2, y2], ...] -> [x1, x2, ...], [y1, y2, ...]
+    def __convertToPlot(self, matrix):
+        x = []
+        y = []
+        for i in range(len(matrix)):
+            x.append(matrix[i][0])
+            y.append(matrix[i][1])
+        return x, y
