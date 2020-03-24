@@ -4,6 +4,8 @@ from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton,QComboBox,QListView,QLabel,QTableWidgetItem
 from PyQt5.QtGui import QIcon
 from trajectory_generator_ui import Ui_MainWindow
+import numpy as np
+import CatmullRom
 
 
 class TrajectoryGeneratorGui(QMainWindow, Ui_MainWindow):
@@ -13,7 +15,21 @@ class TrajectoryGeneratorGui(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot()
     def button_generate_Click(self):
-        self.canvas.drawTrajectory()
+        self.textBrowser.append("経路生成開始")
+        points = np.array(self.pm.control_points)
+        cr = CatmullRom.CatmullRom()
+        dots = []
+        cr.setControlPoint(points)
+        cr.hz = float(self.lineEdit.text())
+        cr.max_speed = float(self.lineEdit_2.text())
+        cr.max_acc = float(self.lineEdit_3.text())
+        cr.calculate()
+        dots, length, time = cr.getResult()
+        self.textBrowser.append("経路生成終了")
+        self.textBrowser.append("経路長　" + '{0:.3f}'.format(length) + "[m]")
+        self.textBrowser.append("到達時間" + '{0:.3f}'.format(time) + "[s]")
+
+        self.canvas.drawTrajectory(dots)
 
     def button_export_Click(self):
         print(self)
@@ -29,6 +45,12 @@ class TrajectoryGeneratorGui(QMainWindow, Ui_MainWindow):
     def cell_changed(self):
         self.updateControlPointsByTable()
         self.canvas.drawControlPoint(self.pm.control_points)
+
+    def button_cell_add_Click(self):
+        self.textBrowser.append("未実装")
+
+    def button_cell_delete_Click(self):
+        self.textBrowser.append("未実装")
 
     # tableの行を入れ替える
     def exchangeTalbeRow(self, row1, row2):

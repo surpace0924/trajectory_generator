@@ -6,20 +6,24 @@ class CatmullRom():
         self.control_point = []
         self.result_point = []
         self.length = 0
-        self.max_mps = 0.22
-        self.hz = 1
+        self.time = 0
+
+        self.hz = 1             # 制御周期[Hz]
+        self.max_speed = 0.22   # 最高速度[m/s]
+        self.max_acc = 0.22     # 最高加速度[m/s^2]
 
     def setControlPoint(self, points):
         self.control_point = points
 
     def getResult(self):
-        return self.result_point, self.length
+        return self.result_point, self.length, self.time
 
     # 計算
     def calculate(self):
         trajectory, self.length, length_list = self.__calculateTrajectory(self.control_point, 10000)
-        profile = self.__getEquallyDistanceProfile(self.length, self.max_mps, self.hz)
+        profile = self.__getEquallyDistanceProfile(self.length, self.max_speed, self.hz)
         self.result_point = self.__pickupTrajectory(trajectory, length_list, profile)
+        self.time = len(profile) / self.hz
 
     # CatmullRomの計算
     def __calculateTrajectory(self, point, div):
@@ -68,8 +72,8 @@ class CatmullRom():
         return 0.5 * ((b * t * t) + (c * t) + d)
 
     # 等間隔
-    def __getEquallyDistanceProfile(self, length, max_mps, hz):
-        time = length / max_mps # 到達時間
+    def __getEquallyDistanceProfile(self, length, max_speed, hz):
+        time = length / max_speed # 到達時間
         num = time * hz         # 分割数
         return np.arange(0, length, length/num)
 

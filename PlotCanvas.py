@@ -10,7 +10,6 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import numpy as np
 import PointManager
-import CatmullRom
 
 def resizeByRange(x, in_min, in_max, out_min, out_max):
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
@@ -66,12 +65,6 @@ class PlotCanvas(FigureCanvas):
         self.draw()
 
     def onclick(self, event):
-        # print ('(%f, %f) [px]' %(event.xdata, event.ydata))
-
-        # 選択点の描画
-        # self.ax.plot(event.xdata, event.ydata, marker='.', color="green")
-        # self.draw()
-
         # pxからmへ単位を変換し，制御点を管理するクラスへ書き込み
         clicked_px =  [event.xdata, event.ydata]
         point = convertToMeter(clicked_px, self.scale, self.origin)
@@ -95,7 +88,6 @@ class PlotCanvas(FigureCanvas):
         # すでに点が描かれている場合はそれを消す
         if self.control_point != None:
             self.control_point[0].remove()
-            print(self.control_point)
 
         dot_px = []
         for i in range(len(point)):
@@ -104,15 +96,8 @@ class PlotCanvas(FigureCanvas):
         self.control_point = self.ax.plot(plot_x, plot_y, marker='.', color="green", linestyle='None')
         self.draw()
 
-    def drawTrajectory(self):
+    def drawTrajectory(self, dots):
         ax = self.figure.axes[0]
-        points = np.array(self.parent.pm.control_points)
-        cr = CatmullRom.CatmullRom()
-        dots = []
-        cr.setControlPoint(points)
-        cr.calculate()
-        dots, length = cr.getResult()
-
         dots = np.array(dots)
         dot_px = []
 
