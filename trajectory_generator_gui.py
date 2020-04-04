@@ -16,8 +16,7 @@ class TrajectoryGeneratorGui(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super(TrajectoryGeneratorGui, self).__init__(parent)
         self.setupUi(self)
-        self.app_param = {'hz':1, 'max_speed':0.22 ,'max_acc':1000}
-        print(self.app_param['hz'])
+        self.app_param = {'hz':'1', 'max_speed':'0.22' ,'max_acc':'1000'}
 
     @pyqtSlot()
     def button_generate_Click(self):
@@ -95,14 +94,33 @@ class TrajectoryGeneratorGui(QMainWindow, Ui_MainWindow):
             self.app_param = json.load(f)
 
         # 各lineEdit，tableに反映
-        self.lineEdit.setText(str(self.app_param['hz']))
-        self.lineEdit_2.setText(str(self.app_param['max_speed']))
-        self.lineEdit_3.setText(str(self.app_param['max_acc']))
+        self.lineEdit.setText(self.app_param['hz'])
+        self.lineEdit_2.setText(self.app_param['max_speed'])
+        self.lineEdit_3.setText(self.app_param['max_acc'])
         self.lineEdit_4.setText(fname)
+        self.pm.control_points = self.app_param['cp']
+
+        # tableをクリアし，座標の数だけ行を用意
+        items = self.pm.control_points
+        self.tableWidget.clearContents()
+        self.tableWidget.setRowCount(len(items))
+
+        # tableへの書き込み
+        r = 0
+        for item in items:
+            self.tableWidget.setItem(r, 0, QTableWidgetItem('{0:.3f}'.format(item[0])))
+            self.tableWidget.setItem(r, 1, QTableWidgetItem('{0:.3f}'.format(item[1])))
+            r += 1
+
 
 
     # 設定ファイルのエクスポート
     def button_export_settingfile(self):
+        self.app_param['hz'] = self.lineEdit.text()
+        self.app_param['max_speed'] = self.lineEdit_2.text()
+        self.app_param['max_acc'] = self.lineEdit_3.text()
+        self.app_param['cp'] = self.pm.control_points
+
         # 保存先の取得
         fname, selectedFilter = QFileDialog.getSaveFileName(self, 'ファイルの保存', 'setting.json')
         # 辞書型をjsonの文字列に変換
