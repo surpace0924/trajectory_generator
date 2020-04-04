@@ -17,11 +17,9 @@ import PointManager
 ########
 
 
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
-        # 追加 #
-        self.MainWindow = MainWindow
-        ########
         MainWindow.setObjectName("MainWindow")
         MainWindow.setEnabled(True)
         MainWindow.resize(1200, 650)
@@ -30,9 +28,6 @@ class Ui_MainWindow(object):
         self.textBrowser = QtWidgets.QTextBrowser(self.centralwidget)
         self.textBrowser.setGeometry(QtCore.QRect(10, 450, 821, 151))
         self.textBrowser.setObjectName("textBrowser")
-        # self.widget = QtWidgets.QWidget(self.centralwidget)
-        # self.widget.setGeometry(QtCore.QRect(10, 10, 821, 431))
-        # self.widget.setObjectName("widget")
         # 書き換え #
         self.pm = PointManager.PointManager()
         self.canvas = PlotCanvas.PlotCanvas(self, width=8.21, height=4.31)
@@ -118,7 +113,22 @@ class Ui_MainWindow(object):
         self.tabWidget.addTab(self.tab, "")
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
+        self.label_7 = QtWidgets.QLabel(self.tab_2)
+        self.label_7.setGeometry(QtCore.QRect(10, 10, 91, 21))
+        self.label_7.setObjectName("label_7")
+        self.lineEdit_4 = QtWidgets.QLineEdit(self.tab_2)
+        self.lineEdit_4.setGeometry(QtCore.QRect(100, 10, 191, 21))
+        self.lineEdit_4.setText("")
+        self.lineEdit_4.setObjectName("lineEdit_4")
+        self.pushButton_7 = QtWidgets.QPushButton(self.tab_2)
+        self.pushButton_7.setGeometry(QtCore.QRect(290, 5, 68, 32))
+        self.pushButton_7.setObjectName("pushButton_7")
         self.tabWidget.addTab(self.tab_2, "")
+        self.pushButton_8 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_8.setEnabled(True)
+        self.pushButton_8.setGeometry(QtCore.QRect(1060, 570, 131, 32))
+        self.pushButton_8.setDefault(False)
+        self.pushButton_8.setObjectName("pushButton_8")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1200, 22))
@@ -129,7 +139,7 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         self.pushButton.clicked.connect(MainWindow.button_generate_Click)
         self.pushButton_2.clicked.connect(MainWindow.button_export_Click)
         self.pushButton_3.clicked.connect(MainWindow.button_cell_up_Click)
@@ -137,6 +147,8 @@ class Ui_MainWindow(object):
         self.tableWidget.cellChanged['int','int'].connect(MainWindow.cell_changed)
         self.pushButton_6.clicked.connect(MainWindow.button_cell_delete_Click)
         self.pushButton_5.clicked.connect(MainWindow.button_cell_add_Click)
+        self.pushButton_7.clicked.connect(MainWindow.button_select_settingfile)
+        self.pushButton_8.clicked.connect(MainWindow.button_export_settingfile)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -164,4 +176,7 @@ class Ui_MainWindow(object):
         self.radioButton_5.setText(_translate("MainWindow", "台形加速"))
         self.radioButton_6.setText(_translate("MainWindow", "躍度最小"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "経路条件"))
+        self.label_7.setText(_translate("MainWindow", "設定ファイル"))
+        self.pushButton_7.setText(_translate("MainWindow", "開く"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "アプリ設定"))
+        self.pushButton_8.setText(_translate("MainWindow", "設定ファイル出力"))

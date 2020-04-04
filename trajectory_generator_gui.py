@@ -5,6 +5,10 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSize
 from PyQt5.QtGui import QIcon
 from trajectory_generator_ui import Ui_MainWindow
 import numpy as np
+
+import json
+from collections import OrderedDict
+
 import CatmullRom
 
 
@@ -12,6 +16,8 @@ class TrajectoryGeneratorGui(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super(TrajectoryGeneratorGui, self).__init__(parent)
         self.setupUi(self)
+        self.app_param = {'hz':1, 'max_speed':0.22 ,'max_acc':1000}
+        print(self.app_param['hz'])
 
     @pyqtSlot()
     def button_generate_Click(self):
@@ -34,11 +40,8 @@ class TrajectoryGeneratorGui(QMainWindow, Ui_MainWindow):
         self.redraw()
 
     def redraw(self):
-        self.MainWindow.resize(self.MainWindow.width(), self.MainWindow.height()+1)
-        self.MainWindow.resize(self.MainWindow.width(), self.MainWindow.height()-1)
-        print(self.MainWindow.width())
-        print(self.MainWindow.height())
-
+        self.resize(self.width(), self.height()+1)
+        self.resize(self.width(), self.height()-1)
 
     # ファイル保存
     def button_export_Click(self):
@@ -84,6 +87,29 @@ class TrajectoryGeneratorGui(QMainWindow, Ui_MainWindow):
 
     def button_cell_delete_Click(self):
         self.textBrowser.append("未実装")
+
+    def button_select_settingfile(self):
+        fname, selectedFilter = QFileDialog.getOpenFileName(self, 'ファイルの保存', 'setting.json')
+
+        with open(fname) as f:
+            self.app_param = json.load(f)
+
+        # 各lineEdit，tableに反映
+        self.lineEdit.setText(str(self.app_param['hz']))
+        self.lineEdit_2.setText(str(self.app_param['max_speed']))
+        self.lineEdit_3.setText(str(self.app_param['max_acc']))
+        self.lineEdit_4.setText(fname)
+
+
+    # 設定ファイルのエクスポート
+    def button_export_settingfile(self):
+        # 保存先の取得
+        fname, selectedFilter = QFileDialog.getSaveFileName(self, 'ファイルの保存', 'setting.json')
+        # 辞書型をjsonの文字列に変換
+        write_text = json.dumps(self.app_param)
+        # 書き込み
+        self.saveFile(fname, write_text)
+
 
     # tableの行を入れ替える
     def exchangeTalbeRow(self, row1, row2):
