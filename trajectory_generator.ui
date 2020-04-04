@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>944</width>
-    <height>561</height>
+    <width>1200</width>
+    <height>650</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,28 +20,28 @@
    <widget class="QTextBrowser" name="textBrowser">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>370</y>
-      <width>581</width>
-      <height>131</height>
+      <x>10</x>
+      <y>450</y>
+      <width>821</width>
+      <height>151</height>
      </rect>
     </property>
    </widget>
    <widget class="QWidget" name="widget" native="true">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>581</width>
-      <height>361</height>
+      <x>10</x>
+      <y>10</y>
+      <width>821</width>
+      <height>431</height>
      </rect>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>590</x>
-      <y>480</y>
+      <x>850</x>
+      <y>570</y>
       <width>94</width>
       <height>32</height>
      </rect>
@@ -56,8 +56,8 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>690</x>
-      <y>480</y>
+      <x>950</x>
+      <y>570</y>
       <width>113</width>
       <height>32</height>
      </rect>
@@ -72,10 +72,10 @@
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>580</x>
+      <x>840</x>
       <y>0</y>
       <width>361</width>
-      <height>481</height>
+      <height>571</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -91,7 +91,7 @@
         <x>10</x>
         <y>0</y>
         <width>341</width>
-        <height>321</height>
+        <height>421</height>
        </rect>
       </property>
       <property name="title">
@@ -103,7 +103,7 @@
          <x>10</x>
          <y>20</y>
          <width>321</width>
-         <height>271</height>
+         <height>371</height>
         </rect>
        </property>
        <property name="columnCount">
@@ -120,7 +120,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>290</y>
+         <y>390</y>
          <width>81</width>
          <height>31</height>
         </rect>
@@ -133,7 +133,7 @@
        <property name="geometry">
         <rect>
          <x>80</x>
-         <y>290</y>
+         <y>390</y>
          <width>81</width>
          <height>32</height>
         </rect>
@@ -146,7 +146,7 @@
        <property name="geometry">
         <rect>
          <x>180</x>
-         <y>290</y>
+         <y>390</y>
          <width>81</width>
          <height>32</height>
         </rect>
@@ -159,7 +159,7 @@
        <property name="geometry">
         <rect>
          <x>250</x>
-         <y>290</y>
+         <y>390</y>
          <width>81</width>
          <height>32</height>
         </rect>
@@ -173,7 +173,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>320</y>
+        <y>420</y>
         <width>221</width>
         <height>121</height>
        </rect>
@@ -303,7 +303,7 @@
       <property name="geometry">
        <rect>
         <x>230</x>
-        <y>320</y>
+        <y>420</y>
         <width>111</width>
         <height>121</height>
        </rect>
@@ -367,7 +367,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>944</width>
+     <width>1200</width>
      <height>22</height>
     </rect>
    </property>

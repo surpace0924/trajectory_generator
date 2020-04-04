@@ -31,8 +31,14 @@ class TrajectoryGeneratorGui(QMainWindow, Ui_MainWindow):
         self.textBrowser.append("到達時間" + '{0:.3f}'.format(time) + "[s]")
 
         self.canvas.drawTrajectory(dots)
-        self.MainWindow.resize(944, self.MainWindow.height()+1)
-        self.MainWindow.resize(944, self.MainWindow.height()-1)
+        self.redraw()
+
+    def redraw(self):
+        self.MainWindow.resize(self.MainWindow.width(), self.MainWindow.height()+1)
+        self.MainWindow.resize(self.MainWindow.width(), self.MainWindow.height()-1)
+        print(self.MainWindow.width())
+        print(self.MainWindow.height())
+
 
     # ファイル保存
     def button_export_Click(self):
