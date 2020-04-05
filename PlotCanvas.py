@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton,QComboBox,QListView,QLabel,QTableWidgetItem
@@ -57,7 +58,7 @@ class PlotCanvas(FigureCanvas):
 
     def plot(self):
         # map画像の読み込み
-        self.img = mpimg.imread("map.png")
+        self.img = mpimg.imread(os.path.dirname(__file__) + "/map.png")
         self.ax.imshow(self.img)
 
         # 軸を消す
