@@ -63,16 +63,19 @@ class TrajectoryGeneratorGui(QMainWindow, Ui_MainWindow):
 
         # 書き込み
         self.saveFile(fname, write_text)
+        self.redraw()
 
     # セルを一つ上に
     def button_cell_up_Click(self):
         current_row = self.tableWidget.currentRow()
         self.exchangeTalbeRow(current_row - 1, current_row)
+        self.redraw()
 
     # セルを一つ下に
     def button_cell_down_Click(self):
         current_row = self.tableWidget.currentRow()
         self.exchangeTalbeRow(current_row + 1, current_row)
+        self.redraw()
 
     # tableの変更イベント
     def cell_changed(self):
@@ -80,15 +83,22 @@ class TrajectoryGeneratorGui(QMainWindow, Ui_MainWindow):
         self.updateControlPointsByTable()
         # 制御点を再描画
         self.canvas.drawControlPoint(self.pm.control_points)
+        # self.redraw()
 
     def button_cell_add_Click(self):
         self.textBrowser.append("未実装")
+        self.redraw()
 
     def button_cell_delete_Click(self):
-        self.textBrowser.append("未実装")
+        current_row = self.tableWidget.currentRow()
+        self.pm.control_points.pop(current_row)
+        self.tableWidget.removeRow(current_row)
+        self.canvas.drawControlPoint(self.pm.control_points)
+        self.redraw()
 
     def button_select_settingfile(self):
-        fname, selectedFilter = QFileDialog.getOpenFileName(self, 'ファイルの保存', 'setting.json')
+        # fname, selectedFilter = QFileDialog.getOpenFileName(self, 'ファイルの保存', 'setting.json')
+        fname = "/Users/ryoga/Documents/code/trajectory_generator/setting.json"
 
         with open(fname) as f:
             self.app_param = json.load(f)
@@ -112,6 +122,8 @@ class TrajectoryGeneratorGui(QMainWindow, Ui_MainWindow):
             self.tableWidget.setItem(r, 1, QTableWidgetItem('{0:.3f}'.format(item[1])))
             r += 1
 
+        self.redraw()
+
 
 
     # 設定ファイルのエクスポート
@@ -127,6 +139,21 @@ class TrajectoryGeneratorGui(QMainWindow, Ui_MainWindow):
         write_text = json.dumps(self.app_param)
         # 書き込み
         self.saveFile(fname, write_text)
+        self.redraw()
+
+    def button_open_map(self):
+        self.textBrowser.append("未実装")
+        self.redraw()
+
+    def button_adjust_origin(self):
+        self.textBrowser.append("未実装")
+        point = [0, 0]
+        point[0] = float(self.lineEdit_6.text())
+        point[1] = float(self.lineEdit_7.text())
+        self.canvas.drawOrigin(point)
+        self.redraw()
+
+
 
 
     # tableの行を入れ替える

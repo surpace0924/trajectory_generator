@@ -7,7 +7,14 @@
 # WARNING! All changes made in this file will be lost!
 
 
+# 書き換え #
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton,QComboBox,QListView,QLabel,QTableWidgetItem
+from PyQt5.QtGui import QIcon
+import PlotCanvas
+import PointManager
+########
 
 
 class Ui_MainWindow(object):
@@ -20,9 +27,11 @@ class Ui_MainWindow(object):
         self.textBrowser = QtWidgets.QTextBrowser(self.centralwidget)
         self.textBrowser.setGeometry(QtCore.QRect(10, 450, 821, 151))
         self.textBrowser.setObjectName("textBrowser")
-        self.widget = QtWidgets.QWidget(self.centralwidget)
-        self.widget.setGeometry(QtCore.QRect(10, 10, 821, 431))
-        self.widget.setObjectName("widget")
+        # 書き換え #
+        self.pm = PointManager.PointManager()
+        self.canvas = PlotCanvas.PlotCanvas(self, width=8.21, height=4.31)
+        self.canvas.move(10,10)
+        ########
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton.setGeometry(QtCore.QRect(850, 570, 94, 32))
         self.pushButton.setObjectName("pushButton")
@@ -111,8 +120,46 @@ class Ui_MainWindow(object):
         self.lineEdit_4.setText("")
         self.lineEdit_4.setObjectName("lineEdit_4")
         self.pushButton_7 = QtWidgets.QPushButton(self.tab_2)
-        self.pushButton_7.setGeometry(QtCore.QRect(290, 5, 68, 32))
+        self.pushButton_7.setGeometry(QtCore.QRect(290, 5, 68, 31))
         self.pushButton_7.setObjectName("pushButton_7")
+        self.lineEdit_5 = QtWidgets.QLineEdit(self.tab_2)
+        self.lineEdit_5.setGeometry(QtCore.QRect(100, 40, 191, 21))
+        self.lineEdit_5.setText("")
+        self.lineEdit_5.setObjectName("lineEdit_5")
+        self.pushButton_9 = QtWidgets.QPushButton(self.tab_2)
+        self.pushButton_9.setGeometry(QtCore.QRect(290, 35, 68, 31))
+        self.pushButton_9.setObjectName("pushButton_9")
+        self.label_8 = QtWidgets.QLabel(self.tab_2)
+        self.label_8.setGeometry(QtCore.QRect(10, 40, 91, 21))
+        self.label_8.setObjectName("label_8")
+        self.pushButton_10 = QtWidgets.QPushButton(self.tab_2)
+        self.pushButton_10.setGeometry(QtCore.QRect(290, 65, 68, 31))
+        self.pushButton_10.setObjectName("pushButton_10")
+        self.lineEdit_6 = QtWidgets.QLineEdit(self.tab_2)
+        self.lineEdit_6.setGeometry(QtCore.QRect(90, 70, 71, 21))
+        self.lineEdit_6.setObjectName("lineEdit_6")
+        self.label_13 = QtWidgets.QLabel(self.tab_2)
+        self.label_13.setGeometry(QtCore.QRect(180, 70, 16, 20))
+        self.label_13.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_13.setObjectName("label_13")
+        self.label_10 = QtWidgets.QLabel(self.tab_2)
+        self.label_10.setGeometry(QtCore.QRect(160, 70, 21, 20))
+        self.label_10.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_10.setObjectName("label_10")
+        self.label_11 = QtWidgets.QLabel(self.tab_2)
+        self.label_11.setGeometry(QtCore.QRect(70, 70, 16, 20))
+        self.label_11.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_11.setObjectName("label_11")
+        self.label_12 = QtWidgets.QLabel(self.tab_2)
+        self.label_12.setGeometry(QtCore.QRect(270, 70, 21, 20))
+        self.label_12.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_12.setObjectName("label_12")
+        self.lineEdit_7 = QtWidgets.QLineEdit(self.tab_2)
+        self.lineEdit_7.setGeometry(QtCore.QRect(200, 70, 71, 21))
+        self.lineEdit_7.setObjectName("lineEdit_7")
+        self.label_9 = QtWidgets.QLabel(self.tab_2)
+        self.label_9.setGeometry(QtCore.QRect(10, 70, 51, 21))
+        self.label_9.setObjectName("label_9")
         self.tabWidget.addTab(self.tab_2, "")
         self.pushButton_8 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_8.setEnabled(True)
@@ -139,6 +186,8 @@ class Ui_MainWindow(object):
         self.pushButton_5.clicked.connect(MainWindow.button_cell_add_Click)
         self.pushButton_7.clicked.connect(MainWindow.button_select_settingfile)
         self.pushButton_8.clicked.connect(MainWindow.button_export_settingfile)
+        self.pushButton_9.clicked.connect(MainWindow.button_open_map)
+        self.pushButton_10.clicked.connect(MainWindow.button_adjust_origin)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -167,6 +216,16 @@ class Ui_MainWindow(object):
         self.radioButton_6.setText(_translate("MainWindow", "躍度最小"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "経路条件"))
         self.label_7.setText(_translate("MainWindow", "設定ファイル"))
-        self.pushButton_7.setText(_translate("MainWindow", "選択"))
+        self.pushButton_7.setText(_translate("MainWindow", "開く"))
+        self.pushButton_9.setText(_translate("MainWindow", "開く"))
+        self.label_8.setText(_translate("MainWindow", "地図ファイル"))
+        self.pushButton_10.setText(_translate("MainWindow", "調整"))
+        self.lineEdit_6.setText(_translate("MainWindow", "1"))
+        self.label_13.setText(_translate("MainWindow", "y"))
+        self.label_10.setText(_translate("MainWindow", "px"))
+        self.label_11.setText(_translate("MainWindow", "x"))
+        self.label_12.setText(_translate("MainWindow", "px"))
+        self.lineEdit_7.setText(_translate("MainWindow", "1"))
+        self.label_9.setText(_translate("MainWindow", "原点"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "アプリ設定"))
         self.pushButton_8.setText(_translate("MainWindow", "設定ファイル出力"))

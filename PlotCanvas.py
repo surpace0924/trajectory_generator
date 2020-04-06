@@ -48,13 +48,15 @@ class PlotCanvas(FigureCanvas):
         self.plot()
 
         self.parent = parent
-        self.origin = [82, 577]      # [px]
-        self.scale = 0.00512295081   # 縮尺[m/px]
+        self.origin = [68, 541]      # [px]
+        self.scale = 0.00510457434   # 縮尺[m/px]
         self.control_point = None
         self.traj = None
+        self.origin_point = None
 
         # キャンバスクリック時のイベント関数を登録
         cid = fig.canvas.mpl_connect('button_press_event', self.onclick)
+        self.drawOrigin(self.origin)
 
     def plot(self):
         # map画像の読み込み
@@ -67,6 +69,18 @@ class PlotCanvas(FigureCanvas):
 
         # 描画
         self.draw()
+
+    def drawOrigin(self, point):
+        self.origin = point
+        # すでに点が描かれている場合はそれを消す
+        if self.origin_point != None:
+            self.origin_point[0].remove()
+
+        dot_px = []
+        plot_x , plot_y = self.__convertToPlot(dot_px)
+        self.origin_point = self.ax.plot(self.origin[0], self.origin[1], marker='.', markersize = 12, color="yellow", linestyle='None')
+        self.draw()
+
 
     def onclick(self, event):
         # pxからmへ単位を変換し，制御点を管理するクラスへ書き込み
@@ -97,7 +111,7 @@ class PlotCanvas(FigureCanvas):
         for i in range(len(point)):
             dot_px.append(convertToPx(point[i], self.scale, self.origin))
         plot_x , plot_y = self.__convertToPlot(dot_px)
-        self.control_point = self.ax.plot(plot_x, plot_y, marker='.', color="green", linestyle='None')
+        self.control_point = self.ax.plot(plot_x, plot_y, marker='.', markersize = 12, color="green", linestyle='None')
         self.draw()
 
     def drawTrajectory(self, dots):
