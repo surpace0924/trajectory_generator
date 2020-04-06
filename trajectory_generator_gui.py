@@ -1,5 +1,6 @@
 import sys
 
+import os
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton,QComboBox,QListView,QLabel,QTableWidgetItem, QFileDialog
 from PyQt5.QtGui import QIcon
@@ -50,16 +51,23 @@ class TrajectoryGeneratorGui(QMainWindow, Ui_MainWindow):
             return
 
         # 書き込むテキストの生成
-        write_text = "["
+        write_text = ""
         for i in range(len(self.pm.trajectory)):
-            write_text += "["
             write_text += str(self.pm.trajectory[i][0])
             write_text += ","
             write_text += str(self.pm.trajectory[i][1])
-            write_text += "]"
-            if i != len(self.pm.trajectory) - 1:
-                write_text += ","
-        write_text += "]"
+            write_text += "\n"
+
+        # write_text = "["
+        # for i in range(len(self.pm.trajectory)):
+        #     write_text += "["
+        #     write_text += str(self.pm.trajectory[i][0])
+        #     write_text += ","
+        #     write_text += str(self.pm.trajectory[i][1])
+        #     write_text += "]"
+        #     if i != len(self.pm.trajectory) - 1:
+        #         write_text += ","
+        # write_text += "]"
 
         # 書き込み
         self.saveFile(fname, write_text)
@@ -98,7 +106,7 @@ class TrajectoryGeneratorGui(QMainWindow, Ui_MainWindow):
 
     def button_select_settingfile(self):
         # fname, selectedFilter = QFileDialog.getOpenFileName(self, 'ファイルの保存', 'setting.json')
-        fname = "/Users/ryoga/Documents/code/trajectory_generator/setting.json"
+        fname = os.path.dirname(__file__) + "/min.json"
 
         with open(fname) as f:
             self.app_param = json.load(f)
