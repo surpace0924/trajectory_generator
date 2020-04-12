@@ -48,8 +48,8 @@ class PlotCanvas(FigureCanvas):
         self.plot()
 
         self.parent = parent
-        self.origin = [68, 541]      # [px]
-        self.scale = 0.00510457434   # 縮尺[m/px]
+        self.origin = [92.5, 569.5]      # [px]
+        self.scale = 0.00499469113   # 縮尺[m/px]
         self.control_point = None
         self.traj = None
         self.origin_point = None
