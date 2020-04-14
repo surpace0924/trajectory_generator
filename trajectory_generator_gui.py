@@ -45,29 +45,37 @@ class TrajectoryGeneratorGui(QMainWindow, Ui_MainWindow):
 
     # ファイル保存
     def button_export_Click(self):
+        # 保存時の拡張子を取得
+        extension = ""
+        if self.comboBox.currentIndex() == 0:
+            extension = "csv"
+        else:
+            extension = "py"
+
         # 保存先の取得
-        fname, selectedFilter = QFileDialog.getSaveFileName(self, 'ファイルの保存', 'trajectory.csv')
+        fname, selectedFilter = QFileDialog.getSaveFileName(self, 'ファイルの保存', 'trajectory.' + extension)
         if fname == "":
             return
 
         # 書き込むテキストの生成
         write_text = ""
-        for i in range(len(self.pm.trajectory)):
-            write_text += str(self.pm.trajectory[i][0])
-            write_text += ","
-            write_text += str(self.pm.trajectory[i][1])
-            write_text += "\n"
-
-        # write_text = "["
-        # for i in range(len(self.pm.trajectory)):
-        #     write_text += "["
-        #     write_text += str(self.pm.trajectory[i][0])
-        #     write_text += ","
-        #     write_text += str(self.pm.trajectory[i][1])
-        #     write_text += "]"
-        #     if i != len(self.pm.trajectory) - 1:
-        #         write_text += ","
-        # write_text += "]"
+        if self.comboBox.currentIndex() == 0:
+            for i in range(len(self.pm.trajectory)):
+                write_text += str(self.pm.trajectory[i][0])
+                write_text += ","
+                write_text += str(self.pm.trajectory[i][1])
+                write_text += "\n"
+        else:
+            write_text = "["
+            for i in range(len(self.pm.trajectory)):
+                write_text += "["
+                write_text += str(self.pm.trajectory[i][0])
+                write_text += ","
+                write_text += str(self.pm.trajectory[i][1])
+                write_text += "]"
+                if i != len(self.pm.trajectory) - 1:
+                    write_text += ","
+            write_text += "]"
 
         # 書き込み
         self.saveFile(fname, write_text)

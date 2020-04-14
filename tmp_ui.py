@@ -7,14 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 
 
-# 書き換え #
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton,QComboBox,QListView,QLabel,QTableWidgetItem
-from PyQt5.QtGui import QIcon
-import PlotCanvas
-import PointManager
-########
 
 
 class Ui_MainWindow(object):
@@ -27,11 +20,9 @@ class Ui_MainWindow(object):
         self.textBrowser = QtWidgets.QTextBrowser(self.centralwidget)
         self.textBrowser.setGeometry(QtCore.QRect(10, 450, 821, 151))
         self.textBrowser.setObjectName("textBrowser")
-        # 書き換え #
-        self.pm = PointManager.PointManager()
-        self.canvas = PlotCanvas.PlotCanvas(self, width=8.21, height=4.31)
-        self.canvas.move(10,10)
-        ########
+        self.widget = QtWidgets.QWidget(self.centralwidget)
+        self.widget.setGeometry(QtCore.QRect(10, 10, 821, 431))
+        self.widget.setObjectName("widget")
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton.setGeometry(QtCore.QRect(850, 570, 94, 32))
         self.pushButton.setObjectName("pushButton")
@@ -160,6 +151,14 @@ class Ui_MainWindow(object):
         self.label_9 = QtWidgets.QLabel(self.tab_2)
         self.label_9.setGeometry(QtCore.QRect(10, 70, 51, 21))
         self.label_9.setObjectName("label_9")
+        self.comboBox = QtWidgets.QComboBox(self.tab_2)
+        self.comboBox.setGeometry(QtCore.QRect(80, 95, 201, 32))
+        self.comboBox.setObjectName("comboBox")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.label_14 = QtWidgets.QLabel(self.tab_2)
+        self.label_14.setGeometry(QtCore.QRect(10, 100, 61, 21))
+        self.label_14.setObjectName("label_14")
         self.tabWidget.addTab(self.tab_2, "")
         self.pushButton_8 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_8.setEnabled(True)
@@ -227,5 +226,8 @@ class Ui_MainWindow(object):
         self.label_12.setText(_translate("MainWindow", "px"))
         self.lineEdit_7.setText(_translate("MainWindow", "1"))
         self.label_9.setText(_translate("MainWindow", "原点"))
+        self.comboBox.setItemText(0, _translate("MainWindow", "CSV"))
+        self.comboBox.setItemText(1, _translate("MainWindow", "Pythonリスト形式"))
+        self.label_14.setText(_translate("MainWindow", "出力形式"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "アプリ設定"))
         self.pushButton_8.setText(_translate("MainWindow", "設定ファイル出力"))
