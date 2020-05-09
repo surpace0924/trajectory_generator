@@ -3,7 +3,7 @@
 import os
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton,QComboBox,QListView,QLabel,QTableWidgetItem
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton, QComboBox, QListView, QLabel, QTableWidgetItem
 from PyQt5.QtGui import QIcon
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
@@ -12,11 +12,14 @@ import matplotlib.image as mpimg
 import numpy as np
 import PointManager
 
+
 def resizeByRange(x, in_min, in_max, out_min, out_max):
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
+
 def resizeByScale(x, a, b):
-    return  a * (x - b)
+    return a * (x - b)
+
 
 def convertToMeter(px, scale, origin):
     result = [0, 0]
@@ -24,11 +27,13 @@ def convertToMeter(px, scale, origin):
     result[1] = scale * (-px[1] + origin[1])
     return result
 
+
 def convertToPx(meter, scale, origin):
     result = [0, 0]
     result[0] = origin[0] + (meter[0] / scale)
     result[1] = origin[1] - (meter[1] / scale)
     return result
+
 
 class PlotCanvas(FigureCanvas):
 
@@ -41,15 +46,15 @@ class PlotCanvas(FigureCanvas):
         self.setParent(parent)
 
         FigureCanvas.setSizePolicy(self,
-                QSizePolicy.Expanding,
-                QSizePolicy.Expanding)
+                                   QSizePolicy.Expanding,
+                                   QSizePolicy.Expanding)
         FigureCanvas.updateGeometry(self)
         self.add_zoom_func()
         self.plot()
 
         self.parent = parent
-        self.origin = [92.5, 569.5]      # [px]
-        self.scale = 0.00499469113   # 縮尺[m/px]
+        self.origin = [83, 765]      # [px]
+        self.scale = 6/1700   # 縮尺[m/px]
         self.control_point = None
         self.traj = None
         self.origin_point = None
@@ -77,14 +82,14 @@ class PlotCanvas(FigureCanvas):
             self.origin_point[0].remove()
 
         dot_px = []
-        plot_x , plot_y = self.__convertToPlot(dot_px)
-        self.origin_point = self.ax.plot(self.origin[0], self.origin[1], marker='.', markersize = 12, color="yellow", linestyle='None')
+        plot_x, plot_y = self.__convertToPlot(dot_px)
+        self.origin_point = self.ax.plot(
+            self.origin[0], self.origin[1], marker='.', markersize=12, color="yellow", linestyle='None')
         self.draw()
-
 
     def onclick(self, event):
         # pxからmへ単位を変換し，制御点を管理するクラスへ書き込み
-        clicked_px =  [event.xdata, event.ydata]
+        clicked_px = [event.xdata, event.ydata]
         point = convertToMeter(clicked_px, self.scale, self.origin)
         self.parent.pm.control_points.append(point)
 
@@ -96,8 +101,10 @@ class PlotCanvas(FigureCanvas):
         # tableへの書き込み
         r = 0
         for item in items:
-            self.parent.tableWidget.setItem(r, 0, QTableWidgetItem('{0:.3f}'.format(item[0])))
-            self.parent.tableWidget.setItem(r, 1, QTableWidgetItem('{0:.3f}'.format(item[1])))
+            self.parent.tableWidget.setItem(
+                r, 0, QTableWidgetItem('{0:.3f}'.format(item[0])))
+            self.parent.tableWidget.setItem(
+                r, 1, QTableWidgetItem('{0:.3f}'.format(item[1])))
             r += 1
 
         # self.drawControlPoint(self.parent.pm.control_points)
@@ -110,8 +117,9 @@ class PlotCanvas(FigureCanvas):
         dot_px = []
         for i in range(len(point)):
             dot_px.append(convertToPx(point[i], self.scale, self.origin))
-        plot_x , plot_y = self.__convertToPlot(dot_px)
-        self.control_point = self.ax.plot(plot_x, plot_y, marker='.', markersize = 12, color="green", linestyle='None')
+        plot_x, plot_y = self.__convertToPlot(dot_px)
+        self.control_point = self.ax.plot(
+            plot_x, plot_y, marker='.', markersize=12, color="green", linestyle='None')
         self.draw()
 
     def drawTrajectory(self, dots):
@@ -127,7 +135,7 @@ class PlotCanvas(FigureCanvas):
             dot_px.append(convertToPx(dots[i], self.scale, self.origin))
 
         # 描画用に座標リストを2つのベクトルに変換
-        plot_x , plot_y = self.__convertToPlot(dot_px)
+        plot_x, plot_y = self.__convertToPlot(dot_px)
 
         # 描画
         self.traj = self.ax.plot(plot_x, plot_y, marker='.', color="red")
@@ -170,8 +178,10 @@ class PlotCanvas(FigureCanvas):
                 scale_factor = 1
                 print(event.button)
             # set new limits
-            xlim = [xdata - (xdata - cur_xlim[0]) / scale_factor, xdata + (cur_xlim[1] - xdata) / scale_factor]
-            ylim = [ydata - (ydata - cur_ylim[0]) / scale_factor, ydata + (cur_ylim[1] - ydata) / scale_factor]
+            xlim = [xdata - (xdata - cur_xlim[0]) / scale_factor,
+                    xdata + (cur_xlim[1] - xdata) / scale_factor]
+            ylim = [ydata - (ydata - cur_ylim[0]) / scale_factor,
+                    ydata + (cur_ylim[1] - ydata) / scale_factor]
 
             self.ax.set_xlim(xlim)
             self.ax.set_ylim(ylim)
