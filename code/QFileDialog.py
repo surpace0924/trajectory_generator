@@ -4,17 +4,18 @@
 
 import sys
 from PyQt5.QtWidgets import (QMainWindow, QTextEdit,
-    QAction, QFileDialog, QApplication)
+                             QAction, QFileDialog, QApplication)
 from PyQt5.QtGui import QIcon
 
 # テキストフォーム中心の画面のためQMainWindowを継承する
+
+
 class Example(QMainWindow):
 
     def __init__(self):
         super().__init__()
 
         self.initUI()
-
 
     def initUI(self):
 
@@ -40,7 +41,6 @@ class Example(QMainWindow):
         self.show()
         self.showDialog()
 
-
     def showDialog(self):
 
         # 第二引数はダイアログのタイトル、第三引数は表示するパス
@@ -56,8 +56,8 @@ class Example(QMainWindow):
                 data = f.read()
                 self.textEdit.setText(data)
 
-if __name__ == '__main__':
 
+if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = Example()
     sys.exit(app.exec_())
